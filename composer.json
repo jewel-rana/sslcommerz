@@ -1,0 +1,14 @@
+{
+    "name": "rajtika/sslcommerz",
+    "description": "SSLCommerce Payment gateway Integration library for laravel",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jewel Rana",
+            "email": "jewelrana.dev@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
