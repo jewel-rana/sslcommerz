@@ -5,7 +5,7 @@ return [
     // For Sandbox, use "https://sandbox.sslcommerz.com"
     // For Live, use "https://securepay.sslcommerz.com"
     'apiDomain' => env("API_DOMAIN_URL", "https://sandbox.sslcommerz.com"),
-    'apiCredentials' => [
+    'credentials' => [
         'store_id' => env("STORE_ID"),
         'store_password' => env("STORE_PASSWORD"),
     ],

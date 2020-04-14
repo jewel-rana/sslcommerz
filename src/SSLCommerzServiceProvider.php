@@ -3,9 +3,8 @@ namespace Rajtika\SSLCommerz;
 
 use Illuminate\Support\ServiceProvider;
 use Rajtika\SSLCommerz\Services\SSLCommerz;
-use Rajtika\SSLCommerz\Services\SSLCommerzNotify;
 
-class MikrotikServiceProvider extends ServiceProvider
+class SSLCommerzServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -16,10 +15,6 @@ class MikrotikServiceProvider extends ServiceProvider
     {
         $this->app->bind('sslcommerz', function () {
             return new SSLCommerz();
-        });
-
-        $this->app->bind('sslcommerznotify', function () {
-            return new SSLCommerzNotify();
         });
     }
 
