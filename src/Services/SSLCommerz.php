@@ -22,6 +22,7 @@ class SSLCommerz implements SSLCommerzInterface
         if( !empty( $params ) ) {
             
             $missinParams = array_diff_key(array_flip([
+                'tran_id',
                 'total_amount',
                 'currency',
                 'cus_name',
@@ -44,13 +45,18 @@ class SSLCommerz implements SSLCommerzInterface
 
     public static function makePayment()
     {
-        return self::$params;
-        self::__handShake();
+        self::__buildData();
     }
 
     public static function validateTransaction( $trxID, $amount, $currency, $requestData )
     {
         return 'You are just call to validate transaction';
+        self::__handShake();
+    }
+
+    private static function __buildData()
+    {
+        
         self::__handShake();
     }
 
