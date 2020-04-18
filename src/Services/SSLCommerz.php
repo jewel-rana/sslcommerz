@@ -57,7 +57,7 @@ class SSLCommerz extends SSLBuilder implements SSLCommerzInterface
 
     public static function makePayment()
     {
-        return parent::_handSheke();
+        return self::_handSheke();
     }
 
     public static function validateTransaction( $trxID, $amount, $currency, $requestData )

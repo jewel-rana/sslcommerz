@@ -1,8 +1,9 @@
 <?php
 namespace Rajtika\SSLCommerz\Services;
 use Rajtika\SSLCommerz\Libs\Validator;
+use Rajtika\SSLCommerz\Libs\SSLHandler;
 
-abstract class SSLBuilder
+abstract class SSLBuilder extends SSLHandler
 {
     protected static $params;
     protected static $config;
@@ -16,15 +17,26 @@ abstract class SSLBuilder
             || empty( self::$config['credentials']['store_password'] ) ) {
             dd('You haven\'t set store_id or store_password yet');
         }
-    }                                    
+    }
+
+    public static function setMethod( string $method = 'master' )
+    {
+        parent::$method = $method;
+        return new static;
+    }
+
+    public static function setType( string $type = 'hosted' )
+    {
+        parent::$type = $type;
+        return new static;
+    }
 
     protected static function _handSheke()
     {
         self::init();
         self::sanitize();
-        $response = self::_apiCall();
-
-        return $response;
+        self::_apiCall();
+        return new static;
     }
 
     private static function sanitize()
@@ -62,7 +74,7 @@ abstract class SSLBuilder
                     'hotel_name',
                     'length_of_stay', 
                     'check_in_time',
-                    'hotel_city'
+                    'hotel_city' 
                 ]), self::$params);
 
                 if( $shippingInfo ) {
@@ -153,6 +165,6 @@ abstract class SSLBuilder
             $response = json_encode(['status' => 'FAILED', 'failedreason' => "Api connect failed", 'sessionkey' => '', 'gw' => []]);
             //return "cURL Error #:" . $err;
         
-        return $response;
+        parent::$response = $response;
     }
 }
