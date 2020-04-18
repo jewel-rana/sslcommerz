@@ -25,25 +25,25 @@ Publish configuration file
 
 Update your app environment (.env) 
 ```
-    SSLC_STORE_ID           =   [YOUR SSLCOMMERZ STORE_ID]
-    SSLC_STORE_PASSWORD     =   [YOUR SSLCOMMERZ STORE_ID]
-    SSLC_STORE_CURRENCY     =   [STORE CURRENCY eg. BDT]
-    SSLC_ROUTE_SUCCESS      =   [route name of success_url, eg: payment.success]
-    SSLC_ROUTE_FAILURE      =   [eg: payment.failure]
-    SSLC_ROUTE_CANCE        =   [eg: payment.cancel]
-    SSLC_ROUTE_IPN          =   [eg: payment.ipn]
-    SSLC_ALLOW_LOCALHOST    =   [TRUE/FALSE]
+SSL_LOCALHOST=[TRUE/FALSE]
+SSL_SANDBOX_MODE=[TRUE/FALSE]
+SSL_STORE_ID=[YOUR SSLCOMMERZ STORE ID]
+SSL_STORE_PASSWORD=[YOUR SSLCOMMERZ STORE_PASSWORD]
+SSL_SUCCESS_URL=sslcommerz/success
+SSL_CANCEL_URL=sslcommerz/cancel
+SSL_FAIL_URL=sslcommerz/fail
+SSL_IPN_URL=sslcommerz/ipn
+SSL_STORE_CURRENCY=[STORE CURRENCY eg. BDT]
 ```
-**NOTE** SSLC_ROUTE_* variables are route name() not url()
 
 Create four ``POST`` routes for SSLCommerz
 ```php
-    Route::post('sslcommerz/success','PaymentController@success')->name('payment.success');
-    Route::post('sslcommerz/failure','PaymentController@failure')->name('payment.failure');
-    Route::post('sslcommerz/cancel','PaymentController@cancel')->name('payment.cancel');
-    Route::post('sslcommerz/ipn','PaymentController@ipn')->name('payment.ipn');
+    Route::post('sslcommerz/success','SSLPaymentController@success');
+    Route::post('sslcommerz/fail','SSLPaymentController@fail');
+    Route::post('sslcommerz/cancel','SSLPaymentController@cancel');
+    Route::post('sslcommerz/ipn','SSLPaymentController@ipn');
 ```
-**NOTE** These named routes are being used in .env file
+**NOTE** These routes are being used in .env file
 
 Add exception in ``app\Http\Middleware\VerifyCsrfToken.php`` 
 ```php
@@ -95,7 +95,7 @@ use Rajtika\SSLCommerz\SSLCommerz;
 
 class PaymentController extends Controller
 {
-    public function hostedWay()
+    public function paymentRedirectWay()
     {
         ...
         //  DO YOU ORDER SAVING PROCESS TO DB OR ANYTHING
@@ -123,7 +123,41 @@ class PaymentController extends Controller
         ])
         ->makePayment()
         ->hosted(); //this method will redirect your customer to ssl commerz payment page
-        //or
+    }
+    //or
+    public function popupWay()
+    {
+        ...
+        //  DO YOU ORDER SAVING PROCESS TO DB OR ANYTHING
+        ...
+
+        // You can generate an unique transaction id by using uniqueid()
+
+        /*
+        * this transaction id must save your order or payment table 
+        * for referencing / validate payment status
+        * You can make this more unique by passing prefix to it
+        */
+        $transaction_id = uniqid(); 
+
+        return SSLCommerz::setParams([
+            'tran_id' => $transaction_id,
+            'product_name' => 'Name of your product',
+            'product_category' => 'Product category',
+            'product_profile' => 'general',
+            'total_amount' => 100,
+            'currency' => 'BDT',
+            'cus_name' => 'John Doe', 
+            'cus_email' => 'customer@example.com',
+            'cus_phone' => '01911XXXXXX',
+            'cus_add1' => 'Dhaka'
+        ]) 
+        //Shipping is required when your order need shipment
+        ->setShippingInfo([
+            'shipping_method' => "YES",
+            'num_of_item' => 2
+        ])
+        ->makePayment()
         ->checkout(); //this method will return a json response for your checkout popup 
     }
 }

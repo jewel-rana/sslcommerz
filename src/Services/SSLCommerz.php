@@ -8,7 +8,7 @@ class SSLCommerz extends SSLBuilder implements SSLCommerzInterface
 {
     public function __construct()
     {
-        parent::$config = Config::get('sslcommerz');
+        self::$config = Config::get('sslcommerz');
     }
 
     public static function setParams( array $params )
@@ -18,7 +18,6 @@ class SSLCommerz extends SSLBuilder implements SSLCommerzInterface
             $missinParams = array_diff_key(array_flip([
                 'tran_id',
                 'total_amount',
-                'currency',
                 'cus_name',
                 'cus_email',
                 'cus_phone',
@@ -50,7 +49,6 @@ class SSLCommerz extends SSLBuilder implements SSLCommerzInterface
             }
             $params = array_merge_recursive( self::$params, $params);
             self::$params = $params;
-            // dd( self::$params );
         }
          return new static;
     }
@@ -62,7 +60,6 @@ class SSLCommerz extends SSLBuilder implements SSLCommerzInterface
 
     public static function validateTransaction( $trxID, $amount, $currency, $requestData )
     {
-        return 'You are just call to validate transaction';
         self::__handShake();
     }
 }
