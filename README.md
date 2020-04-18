@@ -5,19 +5,6 @@ SSLCommerz payment gateway integration
 
 This package will make your integration to SSLCommerz payment gateway simple and easy
 
-## Contents
-
-- [Installation](#installation)
-	- [Publish Configuration](#publish-configuration)
-	- [Setup and Configure](#setup-and-configure)
-- [Usage](#usage)
-    - [Make Payment](#make-payment)
-    - [Refund Process](#refund-process)
-    - [Transaction Query](#transaction-query)
-- [Available Methods](#available-methods)
-- [Changelog](#changelog)
-- [License](#license)
-
 ## Installation
 
 You can install the package via composer:
@@ -79,26 +66,28 @@ Now you can call for payment from Route or Controller method:
 ***Route Way***
 
 ``` php
-SSLCommerz::setParams([
-    'tran_id' => 'your_unique_transaction_id',
-    'product_name' => 'Name of your product',
-    'product_category' => 'Product category',
-    'product_profile' => 'general',
-    'total_amount' => 100,
-    'currency' => 'BDT',
-    'cus_name' => 'John Doe', 
-    'cus_email' => 'customer@example.com',
-    'cus_phone' => '01911XXXXXX',
-    'cus_add1' => 'Dhaka'
-]) //Shipping is required when your order need shipment
-->setShippingInfo([
-    'shipping_method' => "YES",
-    'num_of_item' => 2
-])
-->makePayment()
-->hosted(); //this method will redirect your customer to ssl commerz payment page
-//or
-->checkout(); //this method will return a json response for your checkout popup 
+Route::post('make-payment', function() {
+	SSLCommerz::setParams([
+	    'tran_id' => 'your_unique_transaction_id',
+	    'product_name' => 'Name of your product',
+	    'product_category' => 'Product category',
+	    'product_profile' => 'general',
+	    'total_amount' => 100,
+	    'currency' => 'BDT',
+	    'cus_name' => 'John Doe', 
+	    'cus_email' => 'customer@example.com',
+	    'cus_phone' => '01911XXXXXX',
+	    'cus_add1' => 'Dhaka'
+	]) //Shipping is required when your order need shipment
+	->setShippingInfo([
+	    'shipping_method' => "YES",
+	    'num_of_item' => 2
+	])
+	->makePayment()
+	->hosted(); //this method will redirect your customer to ssl commerz payment page
+	//or
+	->checkout(); //this method will return a json response for your checkout popup 
+});
 ```
 ***Controller Way***
 ``` php
