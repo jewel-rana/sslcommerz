@@ -23,7 +23,7 @@ This package will make your integration to SSLCommerz payment gateway simple and
 You can install the package via composer:
 
 ``` bash
-    composer require dgvai/laravel-sslcommerz
+    composer require rajtika/sslcommerz
 ```
 
 ### Publish Configuration
