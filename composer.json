@@ -9,6 +9,8 @@
             "email": "jewelrana.dev@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
-    "require": {}
+    "minimum-stability": "stable",
+    "require": {
+        "guzzlehttp/guzzle": "~6.0"
+    }
 }
