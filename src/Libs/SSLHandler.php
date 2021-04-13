@@ -28,7 +28,16 @@ class SSLHandler {
 
 	private static function parseResponse()
 	{
-		return json_decode( self::$response );
+        $data = ['status' => 'SUCCESS', 'message' => 'Error!'];
+        $response = json_decode( self::$response );
+        if(strtolower($response->status) === 'success') {
+            $data['data'] = $response->GatewayPageURL;
+            $data['logo'] = $response->storeLogo;
+            if(preg_match("/sandbox/i", $response->GatewayPageURL)) {
+                $data['status'] = 'success';
+            }
+        }
+        return json_encode($data);
 	}
 
 	private static function parseArray()

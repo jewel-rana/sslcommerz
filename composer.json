@@ -1,6 +1,7 @@
 {
     "name": "rajtika/sslcommerz",
     "description": "SSLCommerce Payment gateway Integration library for laravel",
+    "keywords": ["Bangladeshi", "Payment", "Gateway", "Api", "Integration", "package"],
     "type": "library",
     "license": "MIT",
     "authors": [
