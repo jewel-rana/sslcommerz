@@ -21,13 +21,13 @@ abstract class SSLBuilder extends SSLHandler
         }
     }
 
-    public static function __setStoreID($storeID)
+    public static function storeID($storeID): SSLBuilder
     {
         self::$config['store_id'] = $storeID;
         return new static;
     }
 
-    public static function __setStorePassword($storePassword)
+    public static function storePassword($storePassword): SSLBuilder
     {
         self::$config['store_password'] = $storePassword;
         return new static;
