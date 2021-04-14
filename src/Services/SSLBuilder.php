@@ -15,10 +15,20 @@ abstract class SSLBuilder extends SSLHandler
         if( empty( self::$config ) )
             dd('We could not find the SSLCommerz config items.');
 
-        if( empty( self::$config['store_id'] ) 
+        if( empty( self::$config['store_id'] )
             || empty( self::$config['store_password'] ) ) {
             dd('You haven\'t set store_id or store_password yet');
         }
+    }
+
+    public static function __setStoreID($storeID)
+    {
+        self::$config['store_id'] = $storeID;
+    }
+
+    public static function __setStorePassword($storePassword)
+    {
+        self::$config['store_password'] = $storePassword;
     }
 
     protected static function _handSheke()
@@ -32,7 +42,7 @@ abstract class SSLBuilder extends SSLHandler
     private static function sanitize()
     {
         //if shipping method is YES then check shipping details provided
-        if( array_key_exists('shipping_method', self::$params ) 
+        if( array_key_exists('shipping_method', self::$params )
             && in_array( self::$params['shipping_method'], ['YES', 'Courier']  ) ) {
             $shippingInfo = array_diff_key(array_flip([
                 'num_of_item',
@@ -47,13 +57,13 @@ abstract class SSLBuilder extends SSLHandler
         if( array_key_exists('product_profile', self::$params ) ) {
             if( self::$params['product_profile'] == 'airline-tickets' ) {
                 $shippingInfo = array_diff_key(array_flip([
-                    'hours_till_departure', 
-                    'flight_type', 
-                    'pnr', 
-                    'journey_from_to', 
-                    'third_party_booking', 
+                    'hours_till_departure',
+                    'flight_type',
+                    'pnr',
+                    'journey_from_to',
+                    'third_party_booking',
                     'hotel_name',
-                    'length_of_stay', 
+                    'length_of_stay',
                     'check_in_time',
                 ]), self::$params);
 
@@ -61,20 +71,20 @@ abstract class SSLBuilder extends SSLHandler
                     dd( implode(', ', array_keys( $shippingInfo ) ) . ' is missing in your params.' );
                 }
             } elseif( self::$params['product_profile'] == 'travel-vertical' ) {
-                $shippingInfo = array_diff_key(array_flip([ 
+                $shippingInfo = array_diff_key(array_flip([
                     'hotel_name',
-                    'length_of_stay', 
+                    'length_of_stay',
                     'check_in_time',
-                    'hotel_city' 
+                    'hotel_city'
                 ]), self::$params);
 
                 if( $shippingInfo ) {
                     dd( implode(', ', array_keys( $shippingInfo ) ) . ' is missing in your params.' );
                 }
             } elseif( self::$params['product_profile'] == 'telecom-vertical' ) {
-                $shippingInfo = array_diff_key(array_flip([ 
+                $shippingInfo = array_diff_key(array_flip([
                     'product_type',
-                    'topup_number', 
+                    'topup_number',
                     'country_topup'
                 ]), self::$params);
 
@@ -89,8 +99,8 @@ abstract class SSLBuilder extends SSLHandler
 
     private static function getUrl( $key = 'make_payment' )
     {
-        return ( self::$config['allow_localhost'] ) ? 
-            self::SSL_SANDBOX_URL . self::$config['apis'][$key] : 
+        return ( self::$config['allow_localhost'] ) ?
+            self::SSL_SANDBOX_URL . self::$config['apis'][$key] :
             self::SSL_LIVE_URL . self::$config['apis'][$key];
     }
 
@@ -127,7 +137,7 @@ abstract class SSLBuilder extends SSLHandler
         ], self::$params, $additionalInfo);
 
         //re-check currency set or not
-        self::$config['currency'] = ( array_key_exists('currency', self::$config)) ? 
+        self::$config['currency'] = ( array_key_exists('currency', self::$config)) ?
             self::$config['currency'] :  self::$config['default_currency'];
     }
 
@@ -142,7 +152,7 @@ abstract class SSLBuilder extends SSLHandler
             // The default value for this option is 2. It means, it has to have the same name in the certificate as is in the URL you operate against.
         } else {
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0); 
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
             // When the verify value is 0, the connection succeeds regardless of the names in the certificate.
         }
 
@@ -164,7 +174,7 @@ abstract class SSLBuilder extends SSLHandler
         if( $curlErrorNo )
             $response = json_encode(['status' => 'FAILED', 'failedreason' => "Api connect failed", 'sessionkey' => '', 'gw' => []]);
             //return "cURL Error #:" . $err;
-        
+
         self::$response = $response;
     }
 }
